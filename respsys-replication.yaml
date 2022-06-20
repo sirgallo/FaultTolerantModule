@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: repsys-replication
+spec:
+  replicas: 5
+  selector:
+    app: repsys
+  template:
+    metadata:
+      labels:
+        app: repsys
+    spec:
+      containers:
+        - env:
+            - name: NODE_ENV
+              value: docker
+            - name: NODE_OPTIONS
+              value: '"--max-old-space-size=4096"'
+          image: repsys-img
+          imagePullPolicy: Never
+          name: repsys-node
+          ports:
+            - containerPort: 8765
+          resources: {}
+          volumeMounts:
+            - mountPath: /usr/src/repsysdata
+              name: repsys-data
+      restartPolicy: Always
+      volumes:
+        - name: repsys-data
+          persistentVolumeClaim:
+            claimName: repsys-data

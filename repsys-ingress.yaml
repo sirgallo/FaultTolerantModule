@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: repsys-ingress
+spec:
+  rules:
+    - host: repsys-dev.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: repsys-service
+                port:
+                  number: 8765

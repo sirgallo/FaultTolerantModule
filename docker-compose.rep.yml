@@ -1,0 +1,22 @@
+version: "3"
+services:
+  repsys:
+    image: repsys-img
+    build:
+      context: .
+      dockerfile: ./replicatedSystem/Dockerfile
+    ports:
+      - '8765'
+    environment:
+      - NODE_ENV=docker
+      - NODE_OPTIONS="--max-old-space-size=4096"
+    volumes:
+      - repsys-data:/usr/src/repsysdata
+    networks:
+      repsys-network:
+    restart: always
+networks:
+  repsys-network:
+    driver: bridge
+volumes:
+  repsys-data:
